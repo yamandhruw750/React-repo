@@ -46,10 +46,14 @@ function TodoApp() {
       value={{ todos, addTodo, updatedTodo, deleteTodo, toggleComplete }}
     >
       <div className="flex flex-wrap flex-col items-center min-h-screen justify-center bg-gray-400 text-white">
-        <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <div className="min-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
           <h1 className="text-3xl my-5 text-gray-500 text-center">TODO APP</h1>
           <TodoForm />
-          <TodoElement />
+          <div>
+            {todos.map((todo) => (
+              <TodoElement key={todo.id} todo={todo} />
+            ))}
+          </div>
         </div>
       </div>
     </TodoProvider>
