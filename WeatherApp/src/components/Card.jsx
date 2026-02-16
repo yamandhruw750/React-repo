@@ -1,5 +1,12 @@
 import React from "react";
-import { Wind, Droplet, ThermometerIcon, MapPin } from "lucide-react";
+import {
+  Wind,
+  Droplets,
+  ThermometerIcon,
+  MapPin,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -8,69 +15,63 @@ import {
   CardContent,
   CardFooter,
 } from "./ui/card";
-import Forecast from "./Forecast";
 import { useWeather } from "@/context/weatherContext";
-import LoadingSkeleton from "./LoadingSkeleton";
+import HourlyForecast from "./Hourly";
 
 function MainCard() {
-  const { data, formatDate } = useWeather();
+  const { weatherData, formatHour } = useWeather();
 
-  if (!formatDate()) {
-    return <div>Error</div>;
-  }
+  if (!weatherData) return null;
 
-  if (!data) {
-    return (
-      <div>
-        <LoadingSkeleton />
-      </div>
-    );
-  }
-
-  const Date = formatDate();
+  const {
+    location: { name, localtime },
+    current: { temp_c, wind_kph, humidity, mintemp_c, maxtemp_c },
+    condition: { text },
+  } = weatherData;
 
   return (
     <div>
-      <Card className="m-auto">
+      <Card className="m-auto container mt-10">
         <CardHeader className="flex justify-around py-4">
-          <CardTitle className="flex gap-1.5 items-center shadow p-2 rounded-2xl">
+          <CardTitle className="flex gap-1.5 items-center">
             <MapPin />
-            {data.cityname}
+            {name}
           </CardTitle>
-          <CardDescription className="shadow rounded-2xl p-2">
-            {Date.date}
+          <CardDescription>
+            {formatHour(localtime)}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center gap-8 shadow p-10 w-xl m-auto rounded-2xl">
-            <ThermometerIcon />
-            <h1 className="text-9xl  relative pr-14 ">
-              {data.temp}
-              <span className="text-6xl  absolute top-2 right-0 ">°C</span>
-              <div className="text-4xl text-center mt-6 m-auto ">
-                {data.condition}
-              </div>
-            </h1>
+        <Card className="w-md flex items-center justify-center relative px-4 mx-7">
+          <ThermometerIcon className="absolute left-32 top-30" />
+          <h1 className="text-9xl  relative pr-14 ">
+            {temp_c.toFixed(0)}
+            <span className="text-6xl  absolute top-2 right-0 ">°C</span>
+            <div className="text-4xl text-center mt-6 m-auto ">{text}</div>
+          </h1>
 
-            <div className="relative">
-              <h2 className="">
-                <Wind />
-                {data.wind}
-              </h2>
+          <div className="relative flex space-x-4 items-center justify-around  w-full">
+            <h2>
+              <Wind />
+              {wind_kph.toFixed(0)}KmH
+            </h2>
 
-              <h2>
-                <Droplet />
-                {`${data.humidity}%`}
-              </h2>
-            </div>
+            <h2>
+              <Droplets />
+              {humidity}
+            </h2>
+            <h2>
+              <ChevronDown />
+              {mintemp_c}°C
+            </h2>
+            <h2>
+              <ChevronUp />
+              {maxtemp_c}°C
+            </h2>
           </div>
-        </CardContent>
+        </Card>
         <CardFooter>
-          <div className="flex-col mt-20  w-full justify-center items-center gap-2">
-            <h1 className="text-2xl font-bold text-center mb-10">
-              5 Day Forecast
-            </h1>
-            <Forecast />
+          <div className="flex-col mt-20  w-full justify-center items-center gap-2 ">
+            <HourlyForecast hourly={weatherData.hourly} />
           </div>
         </CardFooter>
       </Card>

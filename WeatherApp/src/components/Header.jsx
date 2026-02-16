@@ -4,31 +4,40 @@ import { Search, Moon, Sun } from "lucide-react";
 import { CloudSunRain } from "lucide-react";
 import { useTheme } from "@/context/theme-provider";
 import { useWeather } from "@/context/weatherContext";
+import { useState } from "react";
 
 function Header() {
   const { theme, setTheme } = useTheme();
   const isDark = theme === "dark";
-  const { searchCity, setSearchCity, handleClick} = useWeather();
+
+  const [inputValue, setInputValue] = useState("");
+  const { setCity } = useWeather();
+
+  const handleClick = () => {
+    if (!inputValue || inputValue === "") return;
+
+    setCity(inputValue);
+  };
 
   return (
     <div>
-      <header className="flex items-center justify-between shadow my-2 py-5 px-4 rounded-2xl border-t">
+      <header className="flex items-center justify-between my- py-5 px-4">
         <h1 className="flex gap-2 text-2xl dark:text-gray-100 text-gray-700 font-bold">
           Weather <CloudSunRain />
         </h1>
-        <div className="w-1/3 flex">
+        <div className="w-1/4 flex">
           <Input
             placeholder="Enter City"
-            className="shadow border-none "
-            value={searchCity}
-            onChange={(e) => {
-              setSearchCity(e.target.value);
-            }}
+            className="shadow"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
           />
-          <Button onClick={()=>handleClick()}>
+          <Button onClick={handleClick}>
             <Search />
           </Button>
         </div>
+
+        
         <div
           onClick={() => setTheme(isDark ? "light" : "dark")}
           className={`flex items-center cursor-pointer transition-transform duration-500 ${isDark ? "rotate-90" : "rotate-0"}`}
