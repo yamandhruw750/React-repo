@@ -12,14 +12,14 @@ import {
   CardHeader,
   CardDescription,
   CardTitle,
-  CardContent,
   CardFooter,
 } from "./ui/card";
 import { useWeather } from "@/context/weatherContext";
 import HourlyForecast from "./Hourly";
+import WeeklyForecast from "./Weekly";
 
 function MainCard() {
-  const { weatherData, formatHour } = useWeather();
+  const { weatherData, formatHour, formatDay } = useWeather();
 
   if (!weatherData) return null;
 
@@ -32,43 +32,49 @@ function MainCard() {
   return (
     <div>
       <Card className="m-auto container mt-10">
-        <CardHeader className="flex justify-around py-4">
+        <CardHeader className="flex justify-between py-4 ">
           <CardTitle className="flex gap-1.5 items-center">
             <MapPin />
             {name}
           </CardTitle>
-          <CardDescription>
-            {formatHour(localtime)}
-          </CardDescription>
+          <CardDescription>{formatHour(localtime)}</CardDescription>
         </CardHeader>
-        <Card className="w-md flex items-center justify-center relative px-4 mx-7">
-          <ThermometerIcon className="absolute left-32 top-30" />
-          <h1 className="text-9xl  relative pr-14 ">
-            {temp_c.toFixed(0)}
-            <span className="text-6xl  absolute top-2 right-0 ">°C</span>
-            <div className="text-4xl text-center mt-6 m-auto ">{text}</div>
-          </h1>
+        <div className="flex  justify-between">
+          <Card className="w-md flex items-center justify-center relative px-4 mx-7">
+            <h2 className="font-semibold text-xl w-full text-left">
+              {formatDay(localtime)}
+            </h2>
+            <ThermometerIcon className="absolute left-20 top-42" />
+            <h1 className="text-9xl  relative pr-14 ">
+              {temp_c.toFixed(0)}
+              <span className="text-6xl  absolute top-2 right-0 ">°C</span>
+              <div className="text-4xl text-center mt-6 m-auto ">{text}</div>
+            </h1>
 
-          <div className="relative flex space-x-4 items-center justify-around  w-full">
-            <h2>
-              <Wind />
-              {wind_kph.toFixed(0)}KmH
-            </h2>
+            <div className="relative flex space-x-6 items-center justify-around  w-full py-4 rounded-xl">
+              <h2>
+                <Wind />
+                {wind_kph.toFixed(0)}KmH
+              </h2>
 
-            <h2>
-              <Droplets />
-              {humidity}
-            </h2>
-            <h2>
-              <ChevronDown />
-              {mintemp_c}°C
-            </h2>
-            <h2>
-              <ChevronUp />
-              {maxtemp_c}°C
-            </h2>
+              <h2>
+                <Droplets />
+                {humidity}
+              </h2>
+              <h2>
+                <ChevronDown />
+                {mintemp_c}°C
+              </h2>
+              <h2>
+                <ChevronUp />
+                {maxtemp_c}°C
+              </h2>
+            </div>
+          </Card>
+          <div className=" mr-4">
+            <WeeklyForecast weekly={weatherData.weekly} />
           </div>
-        </Card>
+        </div>
         <CardFooter>
           <div className="flex-col mt-20  w-full justify-center items-center gap-2 ">
             <HourlyForecast hourly={weatherData.hourly} />

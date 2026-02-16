@@ -17,11 +17,13 @@ function Header() {
     if (!inputValue || inputValue === "") return;
 
     setCity(inputValue);
+
+    setInputValue("")
   };
 
   return (
     <div>
-      <header className="flex items-center justify-between my- py-5 px-4">
+      <header className="flex items-center justify-around py-5 px-4">
         <h1 className="flex gap-2 text-2xl dark:text-gray-100 text-gray-700 font-bold">
           Weather <CloudSunRain />
         </h1>

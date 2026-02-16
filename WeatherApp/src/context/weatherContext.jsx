@@ -46,6 +46,13 @@ export const WeatherProvider = ({ children }) => {
     });
   };
 
+  const formatDay = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+    });
+  };
+
   return (
     <WeatherContext.Provider
       value={{
@@ -58,6 +65,7 @@ export const WeatherProvider = ({ children }) => {
         city,
         setCity,
         formatHour,
+        formatDay,
       }}
     >
       {children}
