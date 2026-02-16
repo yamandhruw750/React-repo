@@ -3,7 +3,6 @@ import Header from "./components/Header";
 import { ThemeProvider } from "@/context/theme-provider";
 import MainCard from "./components/Card";
 import { WeatherProvider } from "./context/weatherContext";
-import LoadingSkeleton from "./components/LoadingSkeleton";
 
 function App() {
   return (
