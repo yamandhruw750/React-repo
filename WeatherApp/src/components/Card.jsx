@@ -1,12 +1,8 @@
 import React from "react";
-import {
-  Wind,
-  Droplets,
-  ThermometerIcon,
-  MapPin,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { ThermometerIcon } from "./ui/thermometer";
+import { DropletIcon } from "./ui/droplet";
+import { WindIcon } from "./ui/wind";
+import { MapPin, ChevronDown, ChevronUp } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -24,7 +20,7 @@ function MainCard() {
   if (!weatherData) return null;
 
   const {
-    location: { name, localtime },
+    location: { name, localtime, region },
     current: { temp_c, wind_kph, humidity, mintemp_c, maxtemp_c },
     condition: { text },
   } = weatherData;
@@ -33,9 +29,11 @@ function MainCard() {
     <div>
       <Card className="m-auto container mt-10">
         <CardHeader className="flex justify-between py-4 ">
-          <CardTitle className="flex gap-1.5 items-center">
-            <MapPin />
-            {name}
+          <CardTitle>
+            <span className="flex gap-1.5 items-center">
+              <MapPin />
+              {name},<span className="font-light">{region}</span>
+            </span>
           </CardTitle>
           <CardDescription>{formatHour(localtime)}</CardDescription>
         </CardHeader>
@@ -44,8 +42,10 @@ function MainCard() {
             <h2 className="font-semibold text-xl w-full text-left">
               {formatDay(localtime)}
             </h2>
-            <ThermometerIcon className="absolute left-20 top-42" />
             <h1 className="text-9xl  relative pr-14 ">
+              <span className="absolute top-24 -left-8">
+                <ThermometerIcon />
+              </span>
               {temp_c.toFixed(0)}
               <span className="text-6xl  absolute top-2 right-0 ">°C</span>
               <div className="text-4xl text-center mt-6 m-auto ">{text}</div>
@@ -53,12 +53,12 @@ function MainCard() {
 
             <div className="relative flex space-x-6 items-center justify-around  w-full py-4 rounded-xl">
               <h2>
-                <Wind />
+                <WindIcon />
                 {wind_kph.toFixed(0)}KmH
               </h2>
 
               <h2>
-                <Droplets />
+                <DropletIcon />
                 {humidity}
               </h2>
               <h2>

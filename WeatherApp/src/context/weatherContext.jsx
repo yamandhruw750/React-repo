@@ -7,11 +7,18 @@ export const useWeather = () => {
   return useContext(WeatherContext);
 };
 
-export const WeatherProvider = ({ children }) => {
+export const WeatherProvider = ({ children, storageKey = "Weather-App" }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [weatherData, setWeatherData] = useState(null);
-  const [city, setCity] = useState("Raipur");
+  const [city, setCity] = useState(
+    () => localStorage.getItem(storageKey) || "Raipur",
+  );
+
+  useEffect(() => {
+    if (!city) return;
+    setCity(localStorage.setItem(storageKey, city));
+  }, [city]);
 
   useEffect(() => {
     const fetchWeather = async () => {

@@ -39,7 +39,7 @@ export function ThemeProvider({
     theme,
     setTheme: (theme) => {
       localStorage.setItem(storageKey, theme);
-      setTheme(theme);
+      setTheme(theme);  
     },
   };
 

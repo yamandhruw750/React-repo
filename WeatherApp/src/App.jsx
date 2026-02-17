@@ -1,7 +1,9 @@
 import { ThemeProvider } from "@/context/theme-provider";
 import { WeatherProvider } from "./context/weatherContext";
-import Header from "./components/Header";
+
 import MainCard from "./components/Card";
+// import Layout from "./components/Layout";
+import Header from "./components/Header";
 
 function App() {
   return (
@@ -10,6 +12,7 @@ function App() {
         <div className="h-screen w-full">
           <Header />
           <MainCard />
+          {/* <Layout /> */}
         </div>
       </ThemeProvider>
     </WeatherProvider>
